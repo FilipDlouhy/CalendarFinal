@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.Width
+{
+  width: 1000px;
+  height: 1000px;
+}
+
+.typeOfCalendarSelected
+{
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  background-color: rgba(0, 0, 255, 0.576);
+}
+
+.typeOfCalendarNotSelected
+{
+  background-color: rgba(0, 0, 255, 0.282);
+}
+.mothDayBoxShadow 
+{
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+.WeekSideBarShadow
+{
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+.ModalPositon
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.356);
+}
+.fixedHeihgt{
+  height: 1290px;
+}
