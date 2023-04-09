@@ -1,38 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { task } from "../../../interfaces";
-import TaskInADay from "./TaskInADay";
+import TaskInDay from "./TaskInDay";
 
 interface props {
-  setShowTaskModal: React.Dispatch<React.SetStateAction<boolean>>;
   day: string;
   Tasks: task[];
-  setDayToAddTask: React.Dispatch<React.SetStateAction<string>>;
   setUpdatetTask: React.Dispatch<React.SetStateAction<task | undefined>>;
-  setShowUpdateTaskModalMonth: React.Dispatch<React.SetStateAction<boolean>>;
   setDayToShow: React.Dispatch<React.SetStateAction<string>>;
   setShowAllTasksForADay: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+setDayToAddTask: React.Dispatch<React.SetStateAction<string>>
+setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>
+
+
 }
 
-function DayInAMonht({
-  setShowTaskModal,
-  setShowUpdateTaskModalMonth,
+function DayInMonth({
   day,
   Tasks,
-  setDayToAddTask,
   setUpdatetTask,
   setDayToShow,
   setShowAllTasksForADay,
+  setDayToAddTask,
+  setShowUpdateModal,
+  setShowModal
 }: props) {
+
+
+
   return (
     <div
       className="mothDayBoxShadow  h-full  overflow-y-hidden "
       style={{ width: "14.28%" }}
     >
-      <div className="bg-red-400 cursor-pointer duration-300 font-semibold text-white  text-xs md:text-base xl:text-xl w-full h-1/5 flex items-center justify-end pr-5">
+      <div className="bg-red-400 cursor-pointer duration-300 font-semibold text-white  text-xs md:text-base xl:text-lg w-full h-1/5 flex items-center justify-end pr-5">
         <p
           onClick={() => {
             setDayToAddTask(day);
-            setShowTaskModal(true);
+            setShowModal(true);
           }}
           className="w-4/5 flex items-center justify-center hover:text-fuchsia-500 duration-300 cursor-pointer"
         >
@@ -55,8 +60,9 @@ function DayInAMonht({
         {Tasks &&
           Tasks.slice(0, 3).map((task) => {
             return (
-              <TaskInADay
-                setShowUpdateTaskModalMonth={setShowUpdateTaskModalMonth}
+              <TaskInDay
+              setDayToAddTask={setDayToAddTask}
+              setShowUpdateModal={setShowUpdateModal}
                 setUpdatetTask={setUpdatetTask}
                 task={task}
               />
@@ -67,4 +73,4 @@ function DayInAMonht({
   );
 }
 
-export default DayInAMonht;
+export default DayInMonth;

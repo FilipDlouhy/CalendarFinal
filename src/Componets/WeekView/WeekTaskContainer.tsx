@@ -1,35 +1,28 @@
 import React from "react";
 import { task } from "../../../interfaces";
 import WeekTask from "./WeekTask";
-import AddTaskInAWeekModal from "./AddTaskInAWeekModal";
-import UpdateWeekTaskModal from "./UpdateWeekTaskModal";
 interface props {
-  setShowTaskModal: React.Dispatch<React.SetStateAction<boolean>>;
-  ShowTaskModal: boolean;
-  DayToAddTask: string;
   Tasks: task[];
-  ShowUpdateTaskModal: boolean;
-  setShowUpdateTaskModal: React.Dispatch<React.SetStateAction<boolean>>;
-  UpdateTask: task | undefined;
   setUpdateTask: React.Dispatch<React.SetStateAction<task | undefined>>;
+  setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>
+  setDayToAddTask: React.Dispatch<React.SetStateAction<string>>
+
 }
 
 function WeekTaskContainer({
   setUpdateTask,
-  UpdateTask,
   Tasks,
-  DayToAddTask,
-  ShowTaskModal,
-  setShowTaskModal,
-  ShowUpdateTaskModal,
-  setShowUpdateTaskModal,
+  setShowUpdateModal,
+  setDayToAddTask
+  
 }: props) {
   function renderTask(tasks: task[]) {
     const maxTasks = 6;
     const limitedTasks = tasks.slice(0, maxTasks);
     return limitedTasks.map((task) => (
       <WeekTask
-        setShowUpdateTaskModal={setShowUpdateTaskModal}
+        setDayToAddTask={setDayToAddTask}
+      setShowUpdateModal={setShowUpdateModal}
         setUpdateTask={setUpdateTask}
         task={task}
       />
@@ -41,7 +34,8 @@ function WeekTaskContainer({
     const limitedTasks = tasks.slice(0, maxTasks);
     return limitedTasks.map((task) => (
       <WeekTask
-        setShowUpdateTaskModal={setShowUpdateTaskModal}
+        setDayToAddTask={setDayToAddTask}
+      setShowUpdateModal={setShowUpdateModal}
         setUpdateTask={setUpdateTask}
         task={task}
       />
@@ -57,19 +51,9 @@ function WeekTaskContainer({
       <div className="flex  md:hidden w-full h-full ">
         {renderTaskSmall(Tasks)}
       </div>
-      {ShowTaskModal && (
-        <AddTaskInAWeekModal
-          DayToAddTask={DayToAddTask}
-          setShowTaskModal={setShowTaskModal}
-        />
-      )}
 
-      {ShowUpdateTaskModal && (
-        <UpdateWeekTaskModal
-          UpdateTask={UpdateTask}
-          setShowUpdateTaskModal={setShowUpdateTaskModal}
-        />
-      )}
+
+
     </div>
   );
 }

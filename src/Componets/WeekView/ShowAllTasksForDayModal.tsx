@@ -1,14 +1,14 @@
 import React, { useEffect,useState } from 'react'
 import { task } from '../../../interfaces'
 import { getDatabase, onValue, ref } from 'firebase/database'
-import ShowAllTasksTask from '../WeekView/ShowAllTasksTask'
+import ShowAllTasksTask from './ShowAllTasksTask'
 interface props{
     DayInTheWeek: string
     setShowAllTasksForADay: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 
-function ShowAllTasksInADayMonth({DayInTheWeek,setShowAllTasksForADay}:props) {
+function ShowAllTasksForDayModal({DayInTheWeek,setShowAllTasksForADay}:props) {
     const [AllTasks,setAllTasks] = useState<task[]>([])
 
     function handleCloseModal(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -45,4 +45,4 @@ function ShowAllTasksInADayMonth({DayInTheWeek,setShowAllTasksForADay}:props) {
       )
 }
 
-export default ShowAllTasksInADayMonth
+export default ShowAllTasksForDayModal

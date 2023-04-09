@@ -1,23 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { task } from "../../../interfaces";
 
 interface props {
   task: task;
   setUpdateTask: React.Dispatch<React.SetStateAction<task | undefined>>;
-  setShowUpdateTaskModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>
+  setDayToAddTask: React.Dispatch<React.SetStateAction<string>>
+
 }
-function WeekTask({ task, setUpdateTask, setShowUpdateTaskModal }: props) {
-  if (task.Importance === "Low") {
+function WeekTask({ task, setUpdateTask, setShowUpdateModal,setDayToAddTask }: props) {
+
+
+
+
+
     return (
       <div
         onClick={() => {
           setUpdateTask(task);
-          setShowUpdateTaskModal(true);
+          setShowUpdateModal(true);
+          setDayToAddTask(task.Day)
+
         }}
-        className=" w-1/4 md:w-1/6 h-full mothDayBoxShadow bg-emerald-400 hover:bg-yellow-400 cursor-pointer duration-300"
+         className={`importance-${task.Importance} w-1/4 md:w-1/6 h-full mothDayBoxShadow bg-emerald-400 hover:bg-yellow-400 cursor-pointer duration-300 p-1` }
       >
         <div className="w-full  h-1/4 flex items-center justify-center ">
-          <p className=" text-xs  lg:text-base xl:text-2xl">
+          <p className=" text-xs  lg:text-base xl:text-xl">
             {task.FromTime}-{task.ToTime}
           </p>
         </div>
@@ -27,47 +35,7 @@ function WeekTask({ task, setUpdateTask, setShowUpdateTaskModal }: props) {
         </div>
       </div>
     );
-  } else if (task.Importance === "Medium") {
-    return (
-      <div
-        onClick={() => {
-          setUpdateTask(task);
-          setShowUpdateTaskModal(true);
-        }}
-        className=" w-1/4 md:w-1/6 h-full mothDayBoxShadow bg-blue-600 hover:bg-yellow-400 cursor-pointer duration-300"
-      >
-        <div className="w-full  h-1/4 flex items-center justify-center ">
-          <p className="text-xs  lg:text-base xl:text-2xl">
-            {task.FromTime}-{task.ToTime}
-          </p>
-        </div>
-        <div className="w-full h-3/4 flex   text-xs xl:text-base flex-col items-center justify-around  px-1 text-center">
-          <p>{task.Name}</p>
-          <p>{task.Description}</p>
-        </div>
-      </div>
-    );
-  } else {
-    return (
-      <div
-        onClick={() => {
-          setUpdateTask(task);
-          setShowUpdateTaskModal(true);
-        }}
-        className=" w-1/4 md:w-1/6 h-full mothDayBoxShadow bg-red-400 hover:bg-yellow-400 cursor-pointer duration-300"
-      >
-        <div className="w-full  h-1/4 flex items-center justify-center ">
-          <p className="text-xs  lg:text-base xl:text-2xl">
-            {task.FromTime}-{task.ToTime}
-          </p>
-        </div>
-        <div className="w-full h-3/4 flex  text-xs xl:text-base flex-col items-center justify-around  px-1 text-center">
-          <p>{task.Name}</p>
-          <p>{task.Description}</p>
-        </div>
-      </div>
-    );
-  }
+ 
 }
 
 export default WeekTask;

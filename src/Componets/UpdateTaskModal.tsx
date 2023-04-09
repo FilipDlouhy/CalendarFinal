@@ -3,38 +3,31 @@ import { ref, set } from "firebase/database";
 import { db } from "../firebaseConfig";
 import { task } from "../../interfaces";
 interface props {
-  setTodayTasks: React.Dispatch<React.SetStateAction<task[]>>;
-  TodayTasks: task[];
   SelectedCategory: number;
-  Today: string;
   setUpdatetTask: React.Dispatch<React.SetStateAction<task | undefined>>;
-  UpdatedTask: task;
-  DailyDay: string | undefined;
-  DailyTaks: task[];
-  setDailyTaks: React.Dispatch<React.SetStateAction<task[]>>;
+  UpdatedTask: task | undefined;
+  DayToAddTask:string
+  setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 function UpdateTaskModal({
-  setDailyTaks,
-  DailyTaks,
-  DailyDay,
   UpdatedTask,
   setUpdatetTask,
-  TodayTasks,
-  setTodayTasks,
   SelectedCategory,
-  Today,
+  DayToAddTask,
+  setShowUpdateModal
 }: props) {
-  const [FromTime, setFromTime] = useState(UpdatedTask.FromTime);
-  const [ToTime, setToTime] = useState(UpdatedTask.ToTime);
-  const [Importance, setImportance] = useState(UpdatedTask.Importance);
-  const [Name, setName] = useState(UpdatedTask.Importance);
+  const [FromTime, setFromTime] = useState(UpdatedTask?.FromTime);
+  const [ToTime, setToTime] = useState(UpdatedTask?.ToTime);
+  const [Importance, setImportance] = useState(UpdatedTask?.Importance);
+  const [Name, setName] = useState(UpdatedTask?.Name);
   const [Day, setDay] = useState("");
   const [TaskDescription, setTaskDescription] = useState(
-    UpdatedTask.Description
+    UpdatedTask?.Description
   );
   function handleCloseModal(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if ((e.target as HTMLDivElement).id !== "modal") {
       setUpdatetTask(undefined);
+      setShowUpdateModal(false)
     }
   }
   function uploadToDatabse(task: task) {
@@ -43,130 +36,51 @@ function UpdateTaskModal({
   }
 
   function handleSubmit() {
-    const formHours = parseInt(FromTime.slice(0, 2));
-    const fromminutes = parseInt(FromTime.slice(3, 5));
-    const toHours = parseInt(ToTime.slice(0, 2));
-    const toMinutes = parseInt(ToTime.slice(3, 5));
-    const newTask: task = {
-      Day: Day,
-      FromTime: FromTime,
-      Importance: Importance,
-      Name: Name,
-      ToTime: ToTime,
-      taskId: UpdatedTask.taskId,
-      Description: TaskDescription,
-    };
-    if (FromTime && ToTime && Importance && Name && Day) {
+
+    if (FromTime && ToTime && Importance && Name && Day ) {
+
+      const formHours = parseInt(FromTime.slice(0, 2));
+      const fromminutes = parseInt(FromTime.slice(3, 5));
+      const toHours = parseInt(ToTime.slice(0, 2));
+      const toMinutes = parseInt(ToTime.slice(3, 5));
+      //@ts-ignore
+      const newTask: task = {Day: Day,FromTime: FromTime,Importance: Importance,Name: Name,ToTime: ToTime,taskId: UpdatedTask.taskId,Description: TaskDescription};
       if (formHours === toHours) {
+
         if (fromminutes < toMinutes) {
-          if (SelectedCategory === 1) {
             uploadToDatabse(newTask);
-            const arr = [];
-            arr.push(newTask);
-            TodayTasks.map((task) => {
-              if (task.taskId !== UpdatedTask.taskId) {
-                arr.push(task);
-              }
-            });
-            arr.sort((a, b) => {
-              const aTime = new Date(`1970-01-01T${a.FromTime}`);
-              const bTime = new Date(`1970-01-01T${b.FromTime}`);
-              return aTime.getTime() - bTime.getTime();
-            });
-            setTodayTasks(arr);
-          } else if (SelectedCategory === 2) {
-            uploadToDatabse(newTask);
-            const arr = [];
-            arr.push(newTask);
-            DailyTaks.map((task) => {
-              if (task.taskId !== UpdatedTask.taskId) {
-                arr.push(task);
-              }
-            });
-            arr.sort((a, b) => {
-              const aTime = new Date(`1970-01-01T${a.FromTime}`);
-              const bTime = new Date(`1970-01-01T${b.FromTime}`);
-              return aTime.getTime() - bTime.getTime();
-            });
-            setDailyTaks(arr);
-          }
-        }
-      } else if (formHours < toHours) {
-        if (SelectedCategory === 1) {
-          uploadToDatabse(newTask);
-          const arr = [];
-          arr.push(newTask);
-          TodayTasks.map((task) => {
-            if (task.taskId !== UpdatedTask.taskId) {
-              arr.push(task);
-            }
-          });
-          arr.sort((a, b) => {
-            const aTime = new Date(`1970-01-01T${a.FromTime}`);
-            const bTime = new Date(`1970-01-01T${b.FromTime}`);
-            return aTime.getTime() - bTime.getTime();
-          });
-          setTodayTasks(arr);
-        } else if (SelectedCategory === 2) {
-          uploadToDatabse(newTask);
-          const arr = [];
-          arr.push(newTask);
-          DailyTaks.map((task) => {
-            if (task.taskId !== UpdatedTask.taskId) {
-              arr.push(task);
-            }
-          });
-          arr.sort((a, b) => {
-            const aTime = new Date(`1970-01-01T${a.FromTime}`);
-            const bTime = new Date(`1970-01-01T${b.FromTime}`);
-            return aTime.getTime() - bTime.getTime();
-          });
-          setDailyTaks(arr);
-        }
+            setShowUpdateModal(false)
+            } 
+      }
+      else if (formHours < toHours) {
+
+        uploadToDatabse(newTask);
+        setShowUpdateModal(false)
       }
     }
   }
 
   function handleSubmitDelete() {
-    if (SelectedCategory === 1) {
-      set(ref(db, "Tasks/" + UpdatedTask.Day + "/" + UpdatedTask.taskId), null);
-      const arr: task[] = [];
-      TodayTasks.map((task) => {
-        if (task.taskId !== UpdatedTask.taskId) {
-          arr.push(task);
-        }
-      });
-      arr.sort((a, b) => {
-        const aTime = new Date(`1970-01-01T${a.FromTime}`);
-        const bTime = new Date(`1970-01-01T${b.FromTime}`);
-        return aTime.getTime() - bTime.getTime();
-      });
-      setTodayTasks(arr);
+   
+      set(ref(db, "Tasks/" + UpdatedTask?.Day + "/" + UpdatedTask?.taskId), null);
       setUpdatetTask(undefined);
-    } else if (SelectedCategory === 2) {
-      set(ref(db, "Tasks/" + UpdatedTask.Day + "/" + UpdatedTask.taskId), null);
-      const arr: task[] = [];
-      DailyTaks.map((task) => {
-        if (task.taskId !== UpdatedTask.taskId) {
-          arr.push(task);
-        }
-      });
-      arr.sort((a, b) => {
-        const aTime = new Date(`1970-01-01T${a.FromTime}`);
-        const bTime = new Date(`1970-01-01T${b.FromTime}`);
-        return aTime.getTime() - bTime.getTime();
-      });
-      setDailyTaks(arr);
-      setUpdatetTask(undefined);
-    }
+      setShowUpdateModal(false)
+
+   
   }
 
   useEffect(() => {
-    if (SelectedCategory === 1) {
-      setDay(Today);
-    } else if (SelectedCategory === 2 && DailyDay) {
-      setDay(DailyDay);
+
+    if(SelectedCategory < 2)
+    {
+      const date = new Date()
+      setDay(date.toDateString());
     }
+    else
+    {
+      setDay(DayToAddTask)
+    }
+
   }, [UpdatedTask]);
 
   return (
@@ -184,7 +98,7 @@ function UpdateTaskModal({
           id="modal"
           className="w-full h-16 flex items-center justify-center"
         >
-          <p className="text-2xl font-bold">Add task for Today</p>
+          <p className="text-2xl font-bold">Update Task</p>
         </div>
 
         <div
@@ -259,27 +173,7 @@ function UpdateTaskModal({
           </select>
         </div>
 
-        <div
-          id="modal"
-          className={
-            SelectedCategory < 3
-              ? "hidden"
-              : "w-full h-16  flex items-center justify-around flex-col"
-          }
-        >
-          <p id="modal" className="text-xl font-semibold">
-            Day
-          </p>
-          <input
-            id="modal"
-            onChange={(e) => {
-              const newDate = new Date(e.target.value);
-              setDay(newDate.toDateString());
-            }}
-            type="date"
-            className="w-2/4 shadow-xl bg-blue-100 h-12"
-          />
-        </div>
+
 
         <div
           id="modal"
@@ -303,7 +197,7 @@ function UpdateTaskModal({
             onClick={() => {
               handleSubmit();
             }}
-            className="w-72 h-10 bg-blue-600 font-bold rounded text-xl text-white"
+            className="w-56 h-10 bg-blue-600 font-bold rounded text-xl text-white"
             id="modal"
           >
             Update
@@ -312,7 +206,7 @@ function UpdateTaskModal({
             onClick={() => {
               handleSubmitDelete();
             }}
-            className="w-72 h-10 bg-blue-600 font-bold rounded text-xl text-white"
+            className="w-56 h-10 bg-blue-600 font-bold rounded text-xl text-white"
             id="modal"
           >
             Delete

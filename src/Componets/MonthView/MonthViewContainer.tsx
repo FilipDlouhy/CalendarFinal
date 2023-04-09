@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { task } from "../../../interfaces";
-import { getDatabase, onValue, ref } from "firebase/database";
-import DayInAMonht from "./DayInAMonht";
-import EmptyDayInAMonth from "./EmptyDayInAMonth";
-import OneWeekInAMonth from "./OneWeekInAMonth";
-import AddTaskInAMonth from "./AddTaskInAMonth";
-import UpdateTaskInAMonth from "./UpdateTaskInAMonth";
-import ShowAllTasksInADayMonth from "./ShowAllTasksInADayMonth";
+import DayInMonth from "./DayInMonth";
+import EmptyDayInMonth from "./EmptyDayInMonth";
+import OneWeekInMonth from "./OneWeekInMonth";
+import ShowAllTasksInDayMonth from "./ShowAllTasksInDayMonth";
 
 interface DAYINAWEEEK {
   day: string;
@@ -14,116 +11,17 @@ interface DAYINAWEEEK {
 }
 
 interface props {
-  Month: string;
-  setTasksInAMonth: React.Dispatch<React.SetStateAction<DAYINAWEEEK[]>>;
   TasksInAMonth: DAYINAWEEEK[];
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>
+  setDayToAddTask: React.Dispatch<React.SetStateAction<string>>
+  setUpdatetTask: React.Dispatch<React.SetStateAction<task | undefined>>
 }
-function MonthViewContainer({ Month, TasksInAMonth, setTasksInAMonth }: props) {
-  const [ShowTaskModal, setShowTaskModal] = useState<boolean>(false);
-  const [DayToAddTask, setDayToAddTask] = useState<string>("");
-  const [UpdateTask, setUpdatetTask] = useState<task>();
+
+function MonthViewContainer({ setDayToAddTask, TasksInAMonth, setShowModal, setShowUpdateModal, setUpdatetTask }: props) {
   const [ShowAllTasksForADay, setShowAllTasksForADay] =
     useState<boolean>(false);
   const [DayToShow, setDayToShow] = useState<string>("");
-
-  const [ShowUpdateTaskModalMonnth, setShowUpdateTaskModalMonth] =
-    useState<boolean>(false);
-  function getLastDayOfMonth(month: number, year: number) {
-    return new Date(year, month + 1, 0);
-  }
-
-  function logAllDaysInMonth(month: number, year: number) {
-    const daysInAMonth: string[] = [];
-    const lastDayOfMonth = getLastDayOfMonth(month, year);
-    for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
-      const date = new Date(year, month, i);
-      daysInAMonth.push(date.toDateString());
-    }
-    return daysInAMonth;
-  }
-
-  // Example usage: log all days in April 2023
-
-  useEffect(() => {
-    let number: number = 1;
-
-    switch (Month.slice(0, 3)) {
-      case "Jan":
-        number = 1;
-        break;
-      case "Feb":
-        number = 2;
-        break;
-      case "Mar":
-        number = 3;
-        break;
-      case "Apr":
-        number = 4;
-        break;
-      case "May":
-        number = 5;
-        break;
-      case "Jun":
-        number = 6;
-        break;
-      case "Jul":
-        number = 7;
-        break;
-      case "Aug":
-        number = 8;
-        break;
-      case "Sep":
-        number = 9;
-        break;
-      case "Oct":
-        number = 10;
-        break;
-      case "Nov":
-        number = 11;
-        break;
-      case "Dec":
-        number = 12;
-        break;
-    }
-    const days: string[] = logAllDaysInMonth(number - 1, 2023);
-
-    const arr: DAYINAWEEEK[] = [];
-    const promises: Promise<void>[] = []; // Keep track of promises returned by onValue calls
-
-    days.map((day) => {
-      const Tasks: task[] = [];
-      const newDate = new Date(day);
-      newDate.toDateString();
-      const db = getDatabase();
-      const tasksRef = ref(db, `Tasks/${newDate.toString().slice(0, 15)}`);
-
-      // Push the promise returned by onValue into the promises array
-      promises.push(
-        new Promise<void>((resolve) => {
-          onValue(tasksRef, (snapshot) => {
-            if (snapshot.exists()) {
-              const tasks = snapshot.val();
-              Object.values(tasks).map((task) => {
-                // @ts-ignore
-                Tasks.push({Day: task.Day,FromTime: task.FromTime,Importance: task.Importance,Name: task.Name,taskId: task.taskId,ToTime: task.ToTime,Description: task.Description,
-                });
-              });
-              arr.push({ day: day, tasks: Tasks });
-            } else {
-              arr.push({ day: day, tasks: [] });
-            }
-            resolve(); // Resolve the promise when onValue completes
-          });
-        })
-      );
-    });
-
-    // Wait for all promises to resolve before logging the arr array
-    Promise.all(promises).then(() => {
-      console.log(arr);
-      setTasksInAMonth(arr);
-    });
-  }, [Month, ShowTaskModal, ShowUpdateTaskModalMonnth]);
 
   function renderWeek() {
     if (TasksInAMonth) {
@@ -131,6 +29,7 @@ function MonthViewContainer({ Month, TasksInAMonth, setTasksInAMonth }: props) {
       const Weeks: JSX.Element[] = [];
 
       let firstDay = 0;
+      console.log(TasksInAMonth[0])
       if (TasksInAMonth[0]) {
         switch (TasksInAMonth[0].day.slice(0, 3)) {
           case "Mon":
@@ -156,25 +55,27 @@ function MonthViewContainer({ Month, TasksInAMonth, setTasksInAMonth }: props) {
             break;
         }
       }
-      TasksInAMonth.forEach((day, index) => {
+
+      for (let index = 0; index < TasksInAMonth.length + firstDay; index++) {
         if (index < firstDay) {
-          Days.push(<EmptyDayInAMonth key={index} />);
+          Days.push(<EmptyDayInMonth key={index} />);
         } else {
           Days.push(
-            <DayInAMonht
+            <DayInMonth
+              setShowUpdateModal={setShowUpdateModal}
+              setDayToAddTask={setDayToAddTask}
               setDayToShow={setDayToShow}
               setShowAllTasksForADay={setShowAllTasksForADay}
-              setShowUpdateTaskModalMonth={setShowUpdateTaskModalMonth}
               setUpdatetTask={setUpdatetTask}
-              setDayToAddTask={setDayToAddTask}
-              Tasks={day.tasks}
-              day={day.day}
+              Tasks={TasksInAMonth[index - firstDay].tasks}
+              setShowModal={setShowModal}
+              day={TasksInAMonth[index - firstDay].day}
               key={index}
-              setShowTaskModal={setShowTaskModal}
             />
           );
         }
-      });
+      }
+
       let dayIndex = 0;
       for (let index = 0; index < 5; index++) {
         const days: any[] = [];
@@ -182,7 +83,7 @@ function MonthViewContainer({ Month, TasksInAMonth, setTasksInAMonth }: props) {
           days.push(Days[dayIndex]);
           dayIndex++;
         }
-        Weeks.push(<OneWeekInAMonth days={days} />);
+        Weeks.push(<OneWeekInMonth key={index} days={days} />);
       }
 
       return Weeks;
@@ -191,7 +92,7 @@ function MonthViewContainer({ Month, TasksInAMonth, setTasksInAMonth }: props) {
 
   return (
     <div
-      style={{ height: "92%" }}
+      style={{ height: "90%" }}
       className="w-full overflow-y-auto overflow-x-hidden "
     >
       <div className="w-full h-1/6 flex items-center justify-around text-xs md:text-base xl:text-xl  font-bold bg-blue-400 text-white">
@@ -241,20 +142,8 @@ function MonthViewContainer({ Month, TasksInAMonth, setTasksInAMonth }: props) {
 
       {TasksInAMonth && renderWeek()}
 
-      {ShowTaskModal && (
-        <AddTaskInAMonth
-          DayToAddTask={DayToAddTask}
-          setShowTaskModal={setShowTaskModal}
-        />
-      )}
-      {ShowUpdateTaskModalMonnth && (
-        <UpdateTaskInAMonth
-          UpdateTask={UpdateTask}
-          setShowUpdateTaskModalMonth={setShowUpdateTaskModalMonth}
-        />
-      )}
       {ShowAllTasksForADay && (
-        <ShowAllTasksInADayMonth
+        <ShowAllTasksInDayMonth
           DayInTheWeek={DayToShow}
           setShowAllTasksForADay={setShowAllTasksForADay}
         />

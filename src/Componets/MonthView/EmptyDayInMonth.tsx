@@ -1,4 +1,4 @@
-function EmptyDayInAMonth() {
+function EmptyDayInMonth() {
   return (
     <div
       className="mothDayBoxShadow  h-full "
@@ -7,4 +7,4 @@ function EmptyDayInAMonth() {
   );
 }
 
-export default EmptyDayInAMonth;
+export default EmptyDayInMonth;

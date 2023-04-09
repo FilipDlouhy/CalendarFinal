@@ -4,25 +4,14 @@ import { db } from "../firebaseConfig";
 import { task } from "../../interfaces";
 import uuid from "react-uuid";
 interface props {
-  setTodayTasks: React.Dispatch<React.SetStateAction<task[]>>;
-  TodayTasks: task[];
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   SelectedCategory: number;
-  Today: string;
-  setDailyDay: React.Dispatch<React.SetStateAction<string | undefined>>;
-  DailyDay: string | undefined;
-  DailyTaks: task[];
-  setDailyTaks: React.Dispatch<React.SetStateAction<task[]>>;
+  DayToAddTask: string
 }
 function Modal({
-  setDailyTaks,
-  DailyTaks,
-  DailyDay,
+  DayToAddTask,
   setShowModal,
-  TodayTasks,
-  setTodayTasks,
   SelectedCategory,
-  Today,
 }: props) {
   const [FromTime, setFromTime] = useState("");
   const [ToTime, setToTime] = useState("");
@@ -30,6 +19,7 @@ function Modal({
   const [Name, setName] = useState("");
   const [Day, setDay] = useState("");
   const [TaskDescription, setTaskDescription] = useState("");
+  const [ErrorText,setErrorText] = useState<string>("Add taskyy")
   function handleCloseModal(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if ((e.target as HTMLDivElement).id !== "modal") {
       setShowModal(false);
@@ -60,61 +50,39 @@ function Modal({
         if (fromminutes < toMinutes) {
           uploadToDatabse(newTask);
           setShowModal(false);
-          if (SelectedCategory === 1) {
-            const arr = TodayTasks;
-            arr.push(newTask);
-            arr.sort((a, b) => {
-              const aTime = new Date(`1970-01-01T${a.FromTime}`);
-              const bTime = new Date(`1970-01-01T${b.FromTime}`);
-              return aTime.getTime() - bTime.getTime();
-            });
-            setTodayTasks(arr);
-          } else if (SelectedCategory === 2) {
-            const arr = DailyTaks;
-            arr.push(newTask);
-            arr.sort((a, b) => {
-              const aTime = new Date(`1970-01-01T${a.FromTime}`);
-              const bTime = new Date(`1970-01-01T${b.FromTime}`);
-              return aTime.getTime() - bTime.getTime();
-            });
-            setDailyTaks(arr);
-          }
+        }
+        else
+        {
+         setErrorText("Minutes are incorrect")
         }
       } else if (formHours < toHours) {
         uploadToDatabse(newTask);
         setShowModal(false);
-        if (SelectedCategory === 1) {
-          const arr = TodayTasks;
-          arr.push(newTask);
-          arr.sort((a, b) => {
-            const aTime = new Date(`1970-01-01T${a.FromTime}`);
-            const bTime = new Date(`1970-01-01T${b.FromTime}`);
-            return aTime.getTime() - bTime.getTime();
-          });
-          setTodayTasks(arr);
-        } else if (SelectedCategory === 2) {
-          const arr = DailyTaks;
-          arr.push(newTask);
-          arr.sort((a, b) => {
-            const aTime = new Date(`1970-01-01T${a.FromTime}`);
-            const bTime = new Date(`1970-01-01T${b.FromTime}`);
-            return aTime.getTime() - bTime.getTime();
-          });
-          setDailyTaks(arr);
-        }
+      }
+      else
+      {
+        setErrorText("Hours are incorrect")
       }
     }
-
-    if (SelectedCategory) {
+    else
+    {
+      setErrorText("Please fill All")
     }
+
   }
 
   useEffect(() => {
-    if (SelectedCategory === 1) {
-      setDay(Today);
-    } else if (SelectedCategory === 2 && DailyDay) {
-      setDay(DailyDay);
+    if(SelectedCategory < 2)
+    {
+      const date = new Date()
+      setDay(date.toDateString());
     }
+    else
+    {
+      setDay(DayToAddTask)
+    }
+
+   
   }, [SelectedCategory]);
 
   return (
@@ -132,7 +100,7 @@ function Modal({
           id="modal"
           className="w-full h-16 flex items-center justify-center"
         >
-          <p className="text-2xl font-bold">Add task for Today</p>
+          <p className="text-2xl font-bold">{ErrorText}</p>
         </div>
 
         <div
@@ -203,27 +171,7 @@ function Modal({
           </select>
         </div>
 
-        <div
-          id="modal"
-          className={
-            SelectedCategory < 3
-              ? "hidden"
-              : "w-full h-16  flex items-center justify-around flex-col"
-          }
-        >
-          <p id="modal" className="text-xl font-semibold">
-            Day
-          </p>
-          <input
-            id="modal"
-            onChange={(e) => {
-              const newDate = new Date(e.target.value);
-              setDay(newDate.toDateString());
-            }}
-            type="date"
-            className="w-2/4 shadow-xl bg-blue-100 h-12"
-          />
-        </div>
+
 
         <div
           id="modal"

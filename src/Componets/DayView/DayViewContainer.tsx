@@ -5,14 +5,15 @@ interface props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setUpdatetTask: React.Dispatch<React.SetStateAction<task | undefined>>;
   DailyTaks: task[];
+  setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function DayViewContainer({ setUpdatetTask,DailyTaks, setShowModal }: props) {
+function DayViewContainer({ setUpdatetTask,DailyTaks, setShowModal,setShowUpdateModal }: props) {
   useEffect(() => {
     console.log(DailyTaks);
   }, [DailyTaks]);
   return (
-    <div style={{ height: "92%" }} className="w-full  mothDayBoxShadow">
+    <div style={{ height: "90%" }} className="w-full  mothDayBoxShadow">
       <div className="w-full h-20  flex justify-center items-center">
         <div
           onClick={() => {
@@ -25,7 +26,7 @@ function DayViewContainer({ setUpdatetTask,DailyTaks, setShowModal }: props) {
       </div>
 
       {DailyTaks.map((task) => {
-        return <DailyTask setUpdatetTask={setUpdatetTask} task={task} />;
+        return <DailyTask  setShowUpdateModal={setShowUpdateModal} setUpdatetTask={setUpdatetTask} task={task} />;
       })}
     </div>
   );

@@ -5,7 +5,7 @@
     Name: string;
     ToTime: string;
     taskId: string;
-   Description: string;
+   Description: string | undefined
   }
 
  

@@ -36,3 +36,15 @@
 .fixedHeihgt{
   height: 1290px;
 }
+.importance-Low
+{
+  background-color: #66FF99;
+}
+.importance-Medium
+{
+  background-color: #6699FF;
+}
+.importance-Hihg
+{
+  background-color: #e30101;
+}

@@ -7,64 +7,30 @@ interface props {
   setDailyDay: React.Dispatch<React.SetStateAction<string | undefined>>;
   setDaysInAWeek: React.Dispatch<React.SetStateAction<string[]>>;
   DaysInAWeek: string[];
-  setMonthForMonthView: React.Dispatch<React.SetStateAction<string>>;
-  MonthView: string;
+  setMonth: React.Dispatch<React.SetStateAction<string>>;
+  Month: string;
+  setDayToAddTask:React.Dispatch<React.SetStateAction<string>>;
 }
 
 function Navbar({
-  MonthView,
-  setMonthForMonthView,
+  Month,
+  setMonth,
   DaysInAWeek,
   setDailyDay,
   DailyDay,
   SelectedCategory,
   setSelectedCategory,
   setDaysInAWeek,
-}: props) {
-  const [Mont, setMonth] = useState<string>("");
+  setDayToAddTask
+}: props) { 
+  const [MonthView, setMonthForMonthView] = useState<string>("");
   const [MontFromTO, setMonthFromTO] = useState<string>("");
+
+
   useEffect(() => {
     if (SelectedCategory === 4) {
       const newDate = new Date();
-      let Month: string = "";
-      switch (newDate.toDateString().slice(4, 7)) {
-        case "Jan":
-          Month = "January";
-          break;
-        case "Feb":
-          Month = "February";
-          break;
-        case "Mar":
-          Month = "March";
-          break;
-        case "Apr":
-          Month = "April";
-          break;
-        case "May":
-          Month = "May";
-          break;
-        case "Jun":
-          Month = "June";
-          break;
-        case "Jul":
-          Month = "July";
-          break;
-        case "Aug":
-          Month = "August";
-          break;
-        case "Sep":
-          Month = "September";
-          break;
-        case "Oct":
-          Month = "October";
-          break;
-        case "Nov":
-          Month = "November";
-          break;
-        case "Dec":
-          Month = "December";
-          break;
-      }
+      const Month = newDate.toLocaleString('en-US', { month: 'long' });
       setMonthForMonthView(Month);
     } else if (SelectedCategory === 3) {
       const today = new Date();
@@ -110,7 +76,7 @@ function Navbar({
         )}`
       );
       setDaysInAWeek(daysOfWeek);
-      getMonth(daysOfWeek[0].slice(4, 7));
+      GetMonth(daysOfWeek[0].slice());
     } else if (SelectedCategory === 2) {
       const newDate = new Date();
       newDate.toDateString();
@@ -138,7 +104,7 @@ function Navbar({
         10
       )}`
     );
-    getMonth(daysOfWeek[0].slice(4, 7));
+    GetMonth(daysOfWeek[0].slice());
   }
   function getPrevtWeek(FirstDayOfTheWeek: string) {
     let daysOfWeek: string[] = [];
@@ -156,51 +122,13 @@ function Navbar({
         10
       )}`
     );
-    getMonth(daysOfWeek[0].slice(4, 7));
+    GetMonth(daysOfWeek[0].slice());
   }
 
-  function getMonth(month: string) {
-    let monthString = "";
-    switch (month) {
-      case "Jan":
-        monthString = ` December`;
-        break;
-      case "Feb":
-        monthString = `  January`;
-        break;
-      case "Mar":
-        monthString = ` February`;
-        break;
-      case "Apr":
-        monthString = ` March`;
-        break;
-      case "May":
-        monthString = `  April`;
-        break;
-      case "Jun":
-        monthString = `  May`;
-        break;
-      case "Jul":
-        monthString = `  June`;
-        break;
-      case "Aug":
-        monthString = `  July`;
-        break;
-      case "Sep":
-        monthString = `  August`;
-        break;
-      case "Oct":
-        monthString = `  September`;
-        break;
-      case "Nov":
-        monthString = ` October`;
-        break;
-      case "Dec":
-        monthString = ` January`;
-        break;
-      default:
-    }
-    setMonth(monthString);
+  function GetMonth(month: string) {
+    const date = new Date(month);
+    const monthString = date.toLocaleString('en-US', { month: 'long' });
+    setMonthForMonthView(monthString);
   }
 
   function getDataForTodayView() {
@@ -253,86 +181,39 @@ function Navbar({
   }
 
   function nextMonth(Month: string) {
-    switch (Month.slice(0, 3)) {
-      case "Jan":
-        Month = "February";
-        break;
-      case "Feb":
-        Month = "March";
-        break;
-      case "Mar":
-        Month = "April";
-        break;
-      case "Apr":
-        Month = "May";
-        break;
-      case "May":
-        Month = "June";
-        break;
-      case "Jun":
-        Month = "July";
-        break;
-      case "Jul":
-        Month = "August";
-        break;
-      case "Aug":
-        Month = "September";
-        break;
-      case "Sep":
-        Month = "October";
-        break;
-      case "Oct":
-        Month = "November";
-        break;
-      case "Nov":
-        Month = "December";
-        break;
-      case "Dec":
-        Month = "January";
-        break;
-    }
-    setMonthForMonthView(Month);
+    const date = new Date(Month);
+
+   
+      
+    // Get the year and month from the date
+    const year = date.getFullYear();
+    const month = date.getMonth();
+  
+    // Create a new Date object for the first day of the next month
+    const firstDayOfNextMonth = new Date(year, month + 1, 1);
+  
+    // Return a string representing the first day of the next month
+    setMonth(firstDayOfNextMonth.toDateString());
+    console.log(firstDayOfNextMonth.toDateString())
+    GetMonth(firstDayOfNextMonth.toDateString())
+
+
   }
+
   function prevMonth(Month: string) {
-    switch (Month.slice(0, 3)) {
-      case "Jan":
-        Month = "December";
-        break;
-      case "Feb":
-        Month = "January";
-        break;
-      case "Mar":
-        Month = "February";
-        break;
-      case "Apr":
-        Month = "March";
-        break;
-      case "May":
-        Month = "April";
-        break;
-      case "Jun":
-        Month = "May";
-        break;
-      case "Jul":
-        Month = "June";
-        break;
-      case "Aug":
-        Month = "July";
-        break;
-      case "Sep":
-        Month = "August";
-        break;
-      case "Oct":
-        Month = "September";
-        break;
-      case "Nov":
-        Month = "October";
-        break;
-      case "Dec":
-        Month = "November";
-        break;
-    }
-    setMonthForMonthView(Month);
+    const date = new Date(Month);
+
+    // Get the year and month from the date
+    const year = date.getFullYear();
+    const month = date.getMonth();
+  
+    // Create a new Date object for the first day of the previous month
+    const firstDayOfPreviousMonth = new Date(year, month - 1, 1);
+  
+    // Return a string representing the first day of the previous month
+    setMonth(firstDayOfPreviousMonth.toDateString());
+    console.log(firstDayOfPreviousMonth.toDateString())
+    GetMonth(firstDayOfPreviousMonth.toDateString())
   }
 
   function nextDay(today: string) {
@@ -340,6 +221,7 @@ function Navbar({
     const tomorrow = new Date(today);
     tomorrow.setDate(date.getDate() + 1);
     tomorrow.toDateString();
+    setDayToAddTask(tomorrow.toDateString())
     setDailyDay(tomorrow.toString().slice(0, 15));
   }
   function PreviousDay(today: string) {
@@ -347,6 +229,7 @@ function Navbar({
     const tomorrow = new Date(today);
     tomorrow.setDate(date.getDate() - 1);
     tomorrow.toDateString();
+    setDayToAddTask(tomorrow.toDateString())
     setDailyDay(tomorrow.toString().slice(0, 15));
   }
   function renderDate() {
@@ -356,7 +239,7 @@ function Navbar({
           <div className="h-full w-24 flex items-center justify-center">
             <p
               onClick={() => {
-                prevMonth(MonthView);
+                prevMonth(Month);
               }}
               className="text-xs md:text-sm lg:text-lg text-blue-500 font-bold hover:text-green-500 duration-300 cursor-pointer"
             >
@@ -372,7 +255,7 @@ function Navbar({
           <div className="h-full w-24 flex items-center justify-center">
             <p
               onClick={() => {
-                nextMonth(MonthView);
+                nextMonth(Month);
               }}
               className="text-xs md:text-sm lg:text-lg text-blue-500 font-bold hover:text-green-500 duration-300 cursor-pointer"
             >
@@ -384,30 +267,30 @@ function Navbar({
     } else if (SelectedCategory === 3) {
       return (
         <div className="w-2/4 h-full md:flex-row flex items-center flex-col justify-around md:justify-center">
-          <div className="h-full w-32 flex items-center justify-center">
+          <div className="h-full w-40 flex items-center justify-center">
             <p
               onClick={() => {
                 getPrevtWeek(DaysInAWeek[0]);
               }}
-              className="text-xs md:text-lg text-blue-500 font-bold hover:text-green-500 duration-300 cursor-pointer"
+              className="text-xs md:text-base text-blue-500 font-bold hover:text-green-500 duration-300 cursor-pointer"
             >
               Previous Week
             </p>
           </div>
           <div className="w-52 h-full flex-col flex items-center justify-center">
-            <p className="font-bold text-xs md:text-base lg:text-xl ">{Mont}</p>
+            <p className="font-bold text-xs md:text-base lg:text-xl ">{MonthView}</p>
             <p className="font-bold text-xs md:text-sm lg:text-lg">
               From {parseInt(MontFromTO.slice(0, 2))} to{" "}
               {parseInt(MontFromTO.slice(2, 4))}
             </p>
           </div>
 
-          <div className="h-full w-24 flex items-center justify-center">
+          <div className="h-full w-40 flex items-center justify-center">
             <p
               onClick={() => {
                 getNextWeek(DaysInAWeek[DaysInAWeek.length - 1]);
               }}
-              className="text-xs md:text-lg text-blue-500 font-bold hover:text-green-500 duration-300 cursor-pointer"
+              className="text-xs md:text-base text-blue-500 font-bold hover:text-green-500 duration-300 cursor-pointer"
             >
               Next Week
             </p>
@@ -462,7 +345,7 @@ function Navbar({
     }
   }
   return (
-    <div style={{ height: "8%" }} className="w-full mothDayBoxShadow">
+    <div style={{ height: "10%" }} className="w-full mothDayBoxShadow">
       <div className="w-full h-full flex">
         <div className="w-1/2 h-full  flex items-center justify-start">
           {renderDate()}
@@ -475,8 +358,8 @@ function Navbar({
               }}
               className={
                 SelectedCategory === 1
-                  ? "typeOfCalendarSelected  hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold w-1/4 h-full flex items-center justify-center"
-                  : "typeOfCalendarNotSelected hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold  w-1/4 h-full flex items-center justify-center"
+                  ? "typeOfCalendarSelected   text-xs md:text-base hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold w-1/4 h-full flex items-center justify-center"
+                  : "typeOfCalendarNotSelected  text-xs md:text-base hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold  w-1/4 h-full flex items-center justify-center"
               }
             >
               Today
@@ -487,8 +370,8 @@ function Navbar({
               }}
               className={
                 SelectedCategory === 2
-                  ? "typeOfCalendarSelected  hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold w-1/4 h-full flex items-center justify-center"
-                  : "typeOfCalendarNotSelected hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold  w-1/4 h-full flex items-center justify-center"
+                  ? "typeOfCalendarSelected   text-xs md:text-base hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold w-1/4 h-full flex items-center justify-center"
+                  : "typeOfCalendarNotSelected  text-xs md:text-base hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold  w-1/4 h-full flex items-center justify-center"
               }
             >
               Day
@@ -499,8 +382,8 @@ function Navbar({
               }}
               className={
                 SelectedCategory === 3
-                  ? "typeOfCalendarSelected  hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold w-1/4 h-full flex items-center justify-center"
-                  : "typeOfCalendarNotSelected hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold  w-1/4 h-full flex items-center justify-center"
+                  ? "typeOfCalendarSelected   text-xs md:text-base hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold w-1/4 h-full flex items-center justify-center"
+                  : "typeOfCalendarNotSelected  text-xs md:text-base hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold  w-1/4 h-full flex items-center justify-center"
               }
             >
               Week
@@ -511,8 +394,8 @@ function Navbar({
               }}
               className={
                 SelectedCategory === 4
-                  ? "typeOfCalendarSelected  hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold w-1/4 h-full flex items-center justify-center"
-                  : "typeOfCalendarNotSelected hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold  w-1/4 h-full flex items-center justify-center"
+                  ? "typeOfCalendarSelected   text-xs md:text-base hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold w-1/4 h-full flex items-center justify-center"
+                  : "typeOfCalendarNotSelected  text-xs md:text-base hover:bg-purple-600 cursor-pointer duration-300 text-white font-bold  w-1/4 h-full flex items-center justify-center"
               }
             >
               Month
