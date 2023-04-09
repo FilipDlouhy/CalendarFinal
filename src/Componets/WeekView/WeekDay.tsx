@@ -4,7 +4,7 @@ interface props {
   day: string;
   setShowAllTasksForADay: React.Dispatch<React.SetStateAction<boolean>>;
   setDayInWeek: React.Dispatch<React.SetStateAction<string>>;
-  setDayToAddTask: React.Dispatch<React.SetStateAction<string>>
+  setDayToAddTask: React.Dispatch<React.SetStateAction<string>>;
 }
 function WeekDay({
   setShowAllTasksForADay,
@@ -17,9 +17,9 @@ function WeekDay({
   const [Month, setMonth] = useState<string>("");
   useEffect(() => {
     const date = new Date(day);
-    setDay(date.toLocaleString('en-us', { weekday: 'long' }));
-  
-    const month = date.toLocaleString('en-us', { month: 'numeric' });
+    setDay(date.toLocaleString("en-us", { weekday: "long" }));
+
+    const month = date.toLocaleString("en-us", { month: "numeric" });
     setMonth(month);
   }, [day]);
   return (
@@ -39,7 +39,7 @@ function WeekDay({
       <p
         onClick={() => {
           setShowModal(true);
-          setDayToAddTask(day)
+          setDayToAddTask(day);
         }}
         className="mt-3 hover:text-red-400  duration-200 cursor-pointer"
       >

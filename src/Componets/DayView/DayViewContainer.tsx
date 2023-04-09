@@ -5,10 +5,15 @@ interface props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setUpdatetTask: React.Dispatch<React.SetStateAction<task | undefined>>;
   DailyTaks: task[];
-  setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>
+  setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function DayViewContainer({ setUpdatetTask,DailyTaks, setShowModal,setShowUpdateModal }: props) {
+function DayViewContainer({
+  setUpdatetTask,
+  DailyTaks,
+  setShowModal,
+  setShowUpdateModal,
+}: props) {
   useEffect(() => {
     console.log(DailyTaks);
   }, [DailyTaks]);
@@ -26,7 +31,13 @@ function DayViewContainer({ setUpdatetTask,DailyTaks, setShowModal,setShowUpdate
       </div>
 
       {DailyTaks.map((task) => {
-        return <DailyTask  setShowUpdateModal={setShowUpdateModal} setUpdatetTask={setUpdatetTask} task={task} />;
+        return (
+          <DailyTask
+            setShowUpdateModal={setShowUpdateModal}
+            setUpdatetTask={setUpdatetTask}
+            task={task}
+          />
+        );
       })}
     </div>
   );

@@ -12,13 +12,19 @@ interface DAYINAWEEEK {
 
 interface props {
   TasksInAMonth: DAYINAWEEEK[];
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
-  setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>
-  setDayToAddTask: React.Dispatch<React.SetStateAction<string>>
-  setUpdatetTask: React.Dispatch<React.SetStateAction<task | undefined>>
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setDayToAddTask: React.Dispatch<React.SetStateAction<string>>;
+  setUpdatetTask: React.Dispatch<React.SetStateAction<task | undefined>>;
 }
 
-function MonthViewContainer({ setDayToAddTask, TasksInAMonth, setShowModal, setShowUpdateModal, setUpdatetTask }: props) {
+function MonthViewContainer({
+  setDayToAddTask,
+  TasksInAMonth,
+  setShowModal,
+  setShowUpdateModal,
+  setUpdatetTask,
+}: props) {
   const [ShowAllTasksForADay, setShowAllTasksForADay] =
     useState<boolean>(false);
   const [DayToShow, setDayToShow] = useState<string>("");
@@ -29,7 +35,7 @@ function MonthViewContainer({ setDayToAddTask, TasksInAMonth, setShowModal, setS
       const Weeks: JSX.Element[] = [];
 
       let firstDay = 0;
-      console.log(TasksInAMonth[0])
+      console.log(TasksInAMonth[0]);
       if (TasksInAMonth[0]) {
         switch (TasksInAMonth[0].day.slice(0, 3)) {
           case "Mon":

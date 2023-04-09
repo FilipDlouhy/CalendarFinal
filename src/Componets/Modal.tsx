@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { ref, set} from "firebase/database";
+import { ref, set } from "firebase/database";
 import { db } from "../firebaseConfig";
 import { task } from "../../interfaces";
 import uuid from "react-uuid";
 interface props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   SelectedCategory: number;
-  DayToAddTask: string
+  DayToAddTask: string;
 }
-function Modal({
-  DayToAddTask,
-  setShowModal,
-  SelectedCategory,
-}: props) {
+function Modal({ DayToAddTask, setShowModal, SelectedCategory }: props) {
   const [FromTime, setFromTime] = useState("");
   const [ToTime, setToTime] = useState("");
   const [Importance, setImportance] = useState("Low");
   const [Name, setName] = useState("");
   const [Day, setDay] = useState("");
   const [TaskDescription, setTaskDescription] = useState("");
-  const [ErrorText,setErrorText] = useState<string>("Add taskyy")
+  const [ErrorText, setErrorText] = useState<string>("Add taskyy");
   function handleCloseModal(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if ((e.target as HTMLDivElement).id !== "modal") {
       setShowModal(false);
@@ -50,39 +46,27 @@ function Modal({
         if (fromminutes < toMinutes) {
           uploadToDatabse(newTask);
           setShowModal(false);
-        }
-        else
-        {
-         setErrorText("Minutes are incorrect")
+        } else {
+          setErrorText("Minutes are incorrect");
         }
       } else if (formHours < toHours) {
         uploadToDatabse(newTask);
         setShowModal(false);
+      } else {
+        setErrorText("Hours are incorrect");
       }
-      else
-      {
-        setErrorText("Hours are incorrect")
-      }
+    } else {
+      setErrorText("Please fill All");
     }
-    else
-    {
-      setErrorText("Please fill All")
-    }
-
   }
 
   useEffect(() => {
-    if(SelectedCategory < 2)
-    {
-      const date = new Date()
+    if (SelectedCategory < 2) {
+      const date = new Date();
       setDay(date.toDateString());
+    } else {
+      setDay(DayToAddTask);
     }
-    else
-    {
-      setDay(DayToAddTask)
-    }
-
-   
   }, [SelectedCategory]);
 
   return (
@@ -170,8 +154,6 @@ function Modal({
             <option value="Hihg">Hihg</option>
           </select>
         </div>
-
-
 
         <div
           id="modal"

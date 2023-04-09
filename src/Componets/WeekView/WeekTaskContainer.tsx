@@ -4,17 +4,15 @@ import WeekTask from "./WeekTask";
 interface props {
   Tasks: task[];
   setUpdateTask: React.Dispatch<React.SetStateAction<task | undefined>>;
-  setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>
-  setDayToAddTask: React.Dispatch<React.SetStateAction<string>>
-
+  setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setDayToAddTask: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function WeekTaskContainer({
   setUpdateTask,
   Tasks,
   setShowUpdateModal,
-  setDayToAddTask
-  
+  setDayToAddTask,
 }: props) {
   function renderTask(tasks: task[]) {
     const maxTasks = 6;
@@ -22,7 +20,7 @@ function WeekTaskContainer({
     return limitedTasks.map((task) => (
       <WeekTask
         setDayToAddTask={setDayToAddTask}
-      setShowUpdateModal={setShowUpdateModal}
+        setShowUpdateModal={setShowUpdateModal}
         setUpdateTask={setUpdateTask}
         task={task}
       />
@@ -35,7 +33,7 @@ function WeekTaskContainer({
     return limitedTasks.map((task) => (
       <WeekTask
         setDayToAddTask={setDayToAddTask}
-      setShowUpdateModal={setShowUpdateModal}
+        setShowUpdateModal={setShowUpdateModal}
         setUpdateTask={setUpdateTask}
         task={task}
       />
@@ -51,9 +49,6 @@ function WeekTaskContainer({
       <div className="flex  md:hidden w-full h-full ">
         {renderTaskSmall(Tasks)}
       </div>
-
-
-
     </div>
   );
 }

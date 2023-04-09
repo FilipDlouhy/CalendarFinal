@@ -9,7 +9,7 @@ interface props {
   DaysInAWeek: string[];
   setMonth: React.Dispatch<React.SetStateAction<string>>;
   Month: string;
-  setDayToAddTask:React.Dispatch<React.SetStateAction<string>>;
+  setDayToAddTask: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function Navbar({
@@ -21,16 +21,15 @@ function Navbar({
   SelectedCategory,
   setSelectedCategory,
   setDaysInAWeek,
-  setDayToAddTask
-}: props) { 
+  setDayToAddTask,
+}: props) {
   const [MonthView, setMonthForMonthView] = useState<string>("");
   const [MontFromTO, setMonthFromTO] = useState<string>("");
-
 
   useEffect(() => {
     if (SelectedCategory === 4) {
       const newDate = new Date();
-      const Month = newDate.toLocaleString('en-US', { month: 'long' });
+      const Month = newDate.toLocaleString("en-US", { month: "long" });
       setMonthForMonthView(Month);
     } else if (SelectedCategory === 3) {
       const today = new Date();
@@ -127,7 +126,7 @@ function Navbar({
 
   function GetMonth(month: string) {
     const date = new Date(month);
-    const monthString = date.toLocaleString('en-US', { month: 'long' });
+    const monthString = date.toLocaleString("en-US", { month: "long" });
     setMonthForMonthView(monthString);
   }
 
@@ -183,21 +182,17 @@ function Navbar({
   function nextMonth(Month: string) {
     const date = new Date(Month);
 
-   
-      
     // Get the year and month from the date
     const year = date.getFullYear();
     const month = date.getMonth();
-  
+
     // Create a new Date object for the first day of the next month
     const firstDayOfNextMonth = new Date(year, month + 1, 1);
-  
+
     // Return a string representing the first day of the next month
     setMonth(firstDayOfNextMonth.toDateString());
-    console.log(firstDayOfNextMonth.toDateString())
-    GetMonth(firstDayOfNextMonth.toDateString())
-
-
+    console.log(firstDayOfNextMonth.toDateString());
+    GetMonth(firstDayOfNextMonth.toDateString());
   }
 
   function prevMonth(Month: string) {
@@ -206,14 +201,14 @@ function Navbar({
     // Get the year and month from the date
     const year = date.getFullYear();
     const month = date.getMonth();
-  
+
     // Create a new Date object for the first day of the previous month
     const firstDayOfPreviousMonth = new Date(year, month - 1, 1);
-  
+
     // Return a string representing the first day of the previous month
     setMonth(firstDayOfPreviousMonth.toDateString());
-    console.log(firstDayOfPreviousMonth.toDateString())
-    GetMonth(firstDayOfPreviousMonth.toDateString())
+    console.log(firstDayOfPreviousMonth.toDateString());
+    GetMonth(firstDayOfPreviousMonth.toDateString());
   }
 
   function nextDay(today: string) {
@@ -221,7 +216,7 @@ function Navbar({
     const tomorrow = new Date(today);
     tomorrow.setDate(date.getDate() + 1);
     tomorrow.toDateString();
-    setDayToAddTask(tomorrow.toDateString())
+    setDayToAddTask(tomorrow.toDateString());
     setDailyDay(tomorrow.toString().slice(0, 15));
   }
   function PreviousDay(today: string) {
@@ -229,7 +224,7 @@ function Navbar({
     const tomorrow = new Date(today);
     tomorrow.setDate(date.getDate() - 1);
     tomorrow.toDateString();
-    setDayToAddTask(tomorrow.toDateString())
+    setDayToAddTask(tomorrow.toDateString());
     setDailyDay(tomorrow.toString().slice(0, 15));
   }
   function renderDate() {
@@ -278,7 +273,9 @@ function Navbar({
             </p>
           </div>
           <div className="w-52 h-full flex-col flex items-center justify-center">
-            <p className="font-bold text-xs md:text-base lg:text-xl ">{MonthView}</p>
+            <p className="font-bold text-xs md:text-base lg:text-xl ">
+              {MonthView}
+            </p>
             <p className="font-bold text-xs md:text-sm lg:text-lg">
               From {parseInt(MontFromTO.slice(0, 2))} to{" "}
               {parseInt(MontFromTO.slice(2, 4))}

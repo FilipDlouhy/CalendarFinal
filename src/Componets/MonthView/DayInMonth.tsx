@@ -8,11 +8,9 @@ interface props {
   setUpdatetTask: React.Dispatch<React.SetStateAction<task | undefined>>;
   setDayToShow: React.Dispatch<React.SetStateAction<string>>;
   setShowAllTasksForADay: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
-setDayToAddTask: React.Dispatch<React.SetStateAction<string>>
-setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>
-
-
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setDayToAddTask: React.Dispatch<React.SetStateAction<string>>;
+  setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function DayInMonth({
@@ -23,11 +21,8 @@ function DayInMonth({
   setShowAllTasksForADay,
   setDayToAddTask,
   setShowUpdateModal,
-  setShowModal
+  setShowModal,
 }: props) {
-
-
-
   return (
     <div
       className="mothDayBoxShadow  h-full  overflow-y-hidden "
@@ -61,8 +56,8 @@ function DayInMonth({
           Tasks.slice(0, 3).map((task) => {
             return (
               <TaskInDay
-              setDayToAddTask={setDayToAddTask}
-              setShowUpdateModal={setShowUpdateModal}
+                setDayToAddTask={setDayToAddTask}
+                setShowUpdateModal={setShowUpdateModal}
                 setUpdatetTask={setUpdatetTask}
                 task={task}
               />

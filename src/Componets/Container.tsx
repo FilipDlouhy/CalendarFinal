@@ -14,13 +14,12 @@ interface DAYINAWEEEK {
   tasks: task[];
 }
 
-
 function Container() {
   const [SelectedCategory, setSelectedCategory] = useState<number>(1);
 
   const [ShowModal, setShowModal] = useState<boolean>(false);
 
-  const [ShowUpdateModal,setShowUpdateModal] = useState<boolean>(false)
+  const [ShowUpdateModal, setShowUpdateModal] = useState<boolean>(false);
 
   const [TodayTasks, setTodayTasks] = useState<task[]>([]);
   const [DailyTaks, setDailyTaks] = useState<task[]>([]);
@@ -32,67 +31,59 @@ function Container() {
   const [Today, setToday] = useState<string>("");
   const [Month, setMonth] = useState<string>("");
 
-  const [DayToAddTask,setDayToAddTask] = useState<string>("")
+  const [DayToAddTask, setDayToAddTask] = useState<string>("");
 
   const [TasksInAMonth, setTasksInAMonth] = useState<DAYINAWEEEK[]>([]);
-  
-  function getDaysInMonth(dateString:string) {
+
+  function getDaysInMonth(dateString: string) {
     // Create a new Date object from the input string
     const date = new Date(dateString);
-  
+
     // Get the year and month from the date
     const year = date.getFullYear();
     const month = date.getMonth();
-  
+
     // Create a new Date object for the first day of the month
-  
+
     // Get the number of days in the month by creating a new Date object for the last day of the month and extracting the day value
     const lastDayOfMonth = new Date(year, month + 1, 0);
     const numDaysInMonth = lastDayOfMonth.getDate();
-  
+
     // Create an array of all the days in the month
     const daysInMonth = [];
     for (let i = 1; i <= numDaysInMonth; i++) {
       const newDate = new Date(year, month, i);
       daysInMonth.push(newDate.toDateString());
     }
-  
+
     // Return the array of days in the month
-  return daysInMonth
+    return daysInMonth;
   }
   const getFirstDayOfMonthString = () => {
     const today = new Date();
     const year = today.getFullYear();
     const month = today.getMonth();
     const date = new Date(year, month, 1);
-    const dayOfWeek = date.toLocaleString('en-US', { weekday: 'short' });
-    const monthName = date.toLocaleString('en-US', { month: 'short' });
-    const dayOfMonth = date.toLocaleString('en-US', { day: '2-digit' });
+    const dayOfWeek = date.toLocaleString("en-US", { weekday: "short" });
+    const monthName = date.toLocaleString("en-US", { month: "short" });
+    const dayOfMonth = date.toLocaleString("en-US", { day: "2-digit" });
     const yearString = date.getFullYear().toString();
     return `${dayOfWeek} ${monthName} ${dayOfMonth} ${yearString}`;
   };
-  
 
   useEffect(() => {
-
-
     if (SelectedCategory === 4) {
-      
       let days: string[] = [];
-      if(Month.length === 0 )
-      {
-        const firstDayOfTheMOnth = getFirstDayOfMonthString()
-        console.log(firstDayOfTheMOnth)
-        days= getDaysInMonth(firstDayOfTheMOnth);
-        setMonth(firstDayOfTheMOnth)
-
-      }
-      else
-      {
-        days= getDaysInMonth(Month);
+      if (Month.length === 0) {
+        const firstDayOfTheMOnth = getFirstDayOfMonthString();
+        console.log(firstDayOfTheMOnth);
+        days = getDaysInMonth(firstDayOfTheMOnth);
+        setMonth(firstDayOfTheMOnth);
+      } else {
+        days = getDaysInMonth(Month);
       }
 
-      console.log(days)
+      console.log(days);
       const arr: DAYINAWEEEK[] = [];
       const promises: Promise<void>[] = []; // Keep track of promises returned by onValue calls
 
@@ -137,7 +128,7 @@ function Container() {
     } else if (SelectedCategory === 3) {
       const arr: DAYINAWEEEK[] = [];
       const promises: Promise<void>[] = []; // Keep track of promises returned by onValue calls
-      console.log(DaysInAWeek)
+      console.log(DaysInAWeek);
       DaysInAWeek.map((day) => {
         const Tasks: task[] = [];
         const newDate = new Date(day);
@@ -227,12 +218,19 @@ function Container() {
     if (DailyDay === undefined) {
       setDailyDay(newDate.toDateString());
     }
-  }, [SelectedCategory, DailyDay, ShowModal=== false, ShowUpdateModal  === false,DaysInAWeek,Month]);
-  function renderView()  {
+  }, [
+    SelectedCategory,
+    DailyDay,
+    ShowModal === false,
+    ShowUpdateModal === false,
+    DaysInAWeek,
+    Month,
+  ]);
+  function renderView() {
     if (SelectedCategory === 4) {
       return (
         <MonthViewContainer
-        setDayToAddTask={setDayToAddTask}
+          setDayToAddTask={setDayToAddTask}
           TasksInAMonth={TasksInAMonth}
           setShowModal={setShowModal}
           setShowUpdateModal={setShowUpdateModal}
@@ -241,8 +239,8 @@ function Container() {
       );
     } else if (SelectedCategory === 3) {
       return (
-        <WeekWiewContainer 
-        setDayToAddTask={setDayToAddTask}
+        <WeekWiewContainer
+          setDayToAddTask={setDayToAddTask}
           setShowUpdateModal={setShowUpdateModal}
           setUpdatetTask={setUpdatetTask}
           DaysInAWeekTasks={DaysInAWeekTasks}
@@ -252,7 +250,7 @@ function Container() {
     } else if (SelectedCategory === 2) {
       return (
         <DayViewContainer
-        setShowUpdateModal={setShowUpdateModal}
+          setShowUpdateModal={setShowUpdateModal}
           DailyTaks={DailyTaks}
           setUpdatetTask={setUpdatetTask}
           setShowModal={setShowModal}
@@ -261,7 +259,7 @@ function Container() {
     } else if (SelectedCategory === 1) {
       return (
         <TodayViewContainer
-        setShowUpdateModal={setShowUpdateModal}
+          setShowUpdateModal={setShowUpdateModal}
           setUpdatetTask={setUpdatetTask}
           TodayTasks={TodayTasks}
           setShowModal={setShowModal}
@@ -283,9 +281,9 @@ function Container() {
         setSelectedCategory={setSelectedCategory}
       />
       {renderView()}
-      {ShowUpdateModal  && (
+      {ShowUpdateModal && (
         <UpdateTaskModal
-        DayToAddTask={DayToAddTask}
+          DayToAddTask={DayToAddTask}
           UpdatedTask={UpdateTask}
           setUpdatetTask={setUpdatetTask}
           SelectedCategory={SelectedCategory}
@@ -294,7 +292,7 @@ function Container() {
       )}
       {ShowModal && (
         <Modal
-        DayToAddTask={DayToAddTask}
+          DayToAddTask={DayToAddTask}
           SelectedCategory={SelectedCategory}
           setShowModal={setShowModal}
         />
