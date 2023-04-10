@@ -1,9 +1,9 @@
 import { task } from "../../../interfaces";
-interface props {
+interface Props {
   task: task;
 }
 
-function ShowAllTasksTask({ task }: props) {
+function ShowAllTasksTask({ task }: Props) {
   return (
     <div
       className={`importance-${task.Importance} w-5/6 flex justify-around items-center flex-col h-64 my-4 bg-emerald-400`}

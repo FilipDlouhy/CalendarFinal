@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ref, set } from "firebase/database";
 import { db } from "../firebaseConfig";
 import { task } from "../../interfaces";
-interface props {
+interface Props {
   SelectedCategory: number;
   setUpdatetTask: React.Dispatch<React.SetStateAction<task | undefined>>;
   UpdatedTask: task | undefined;
@@ -15,7 +15,7 @@ function UpdateTaskModal({
   SelectedCategory,
   DayToAddTask,
   setShowUpdateModal
-}: props) {
+}: Props) {
   const [FromTime, setFromTime] = useState(UpdatedTask?.FromTime);
   const [ToTime, setToTime] = useState(UpdatedTask?.ToTime);
   const [Importance, setImportance] = useState(UpdatedTask?.Importance);
@@ -37,13 +37,12 @@ function UpdateTaskModal({
 
   function handleSubmit() {
 
-    if (FromTime && ToTime && Importance && Name && Day ) {
+    if (FromTime && ToTime && Importance && Name  && UpdatedTask?.taskId ) {
 
       const formHours = parseInt(FromTime.slice(0, 2));
       const fromminutes = parseInt(FromTime.slice(3, 5));
       const toHours = parseInt(ToTime.slice(0, 2));
       const toMinutes = parseInt(ToTime.slice(3, 5));
-      //@ts-ignore
       const newTask: task = {Day: Day,FromTime: FromTime,Importance: Importance,Name: Name,ToTime: ToTime,taskId: UpdatedTask.taskId,Description: TaskDescription};
       if (formHours === toHours) {
 

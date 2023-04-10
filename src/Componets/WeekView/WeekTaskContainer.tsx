@@ -1,7 +1,7 @@
 import React from "react";
 import { task } from "../../../interfaces";
 import WeekTask from "./WeekTask";
-interface props {
+interface Props {
   Tasks: task[];
   setUpdateTask: React.Dispatch<React.SetStateAction<task | undefined>>;
   setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,7 +13,7 @@ function WeekTaskContainer({
   Tasks,
   setShowUpdateModal,
   setDayToAddTask,
-}: props) {
+}: Props) {
   function renderTask(tasks: task[]) {
     const maxTasks = 6;
     const limitedTasks = tasks.slice(0, maxTasks);

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { task } from "../../../interfaces";
 
-interface props {
+interface Props {
   task: task;
   setUpdateTask: React.Dispatch<React.SetStateAction<task | undefined>>;
   setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,7 +12,7 @@ function WeekTask({
   setUpdateTask,
   setShowUpdateModal,
   setDayToAddTask,
-}: props) {
+}: Props) {
   return (
     <div
       onClick={() => {

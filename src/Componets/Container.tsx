@@ -99,9 +99,8 @@ function Container() {
           new Promise<void>((resolve) => {
             onValue(tasksRef, (snapshot) => {
               if (snapshot.exists()) {
-                const tasks = snapshot.val();
-                Object.values(tasks).map((task) => {
-                  // @ts-ignore
+                const tasks = snapshot.val()  as task[] ;
+                Object.values(tasks).map((task)=> {
                   Tasks.push({Day: task.Day,FromTime: task.FromTime,Importance: task.Importance,Name: task.Name,taskId: task.taskId,ToTime: task.ToTime,Description: task.Description,
                   });
                 });
@@ -141,9 +140,8 @@ function Container() {
           new Promise<void>((resolve) => {
             onValue(tasksRef, (snapshot) => {
               if (snapshot.exists()) {
-                const tasks = snapshot.val();
+                const tasks = snapshot.val() as task[];
                 Object.values(tasks).map((task) => {
-                  // @ts-ignore
                   Tasks.push({Day: task.Day,FromTime: task.FromTime,Importance: task.Importance,Name: task.Name,taskId: task.taskId,ToTime: task.ToTime,Description: task.Description,
                   });
                 });
@@ -173,10 +171,9 @@ function Container() {
         const tasks = ref(db, `Tasks/${newDate.toString().slice(0, 15)}`);
         get(tasks).then((snapshot) => {
           if (snapshot.exists()) {
-            const stats = snapshot.val();
+            const stats = snapshot.val()  as task[]; 
             const arr: task[] = [];
             Object.values(stats).map((task) => {
-              // @ts-ignore
               arr.push({Day: task.Day,FromTime: task.FromTime,Importance: task.Importance,Name: task.Name,taskId: task.taskId,ToTime: task.ToTime,Description: task.Description,
               });
             });
@@ -197,10 +194,10 @@ function Container() {
       const tasks = ref(db, `Tasks/${newDate.toString().slice(0, 15)}`);
       get(tasks).then((snapshot) => {
         if (snapshot.exists()) {
-          const stats = snapshot.val();
+          const stats = snapshot.val()  as task[];
           const arr: task[] = [];
           Object.values(stats).map((task) => {
-            // @ts-ignore
+          
             arr.push({Day: task.Day,FromTime: task.FromTime,Importance: task.Importance,Name: task.Name,taskId: task.taskId,ToTime: task.ToTime,Description: task.Description,
             });
           });

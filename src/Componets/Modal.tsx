@@ -3,12 +3,12 @@ import { ref, set } from "firebase/database";
 import { db } from "../firebaseConfig";
 import { task } from "../../interfaces";
 import uuid from "react-uuid";
-interface props {
+interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   SelectedCategory: number;
   DayToAddTask: string;
 }
-function Modal({ DayToAddTask, setShowModal, SelectedCategory }: props) {
+function Modal({ DayToAddTask, setShowModal, SelectedCategory }: Props) {
   const [FromTime, setFromTime] = useState("");
   const [ToTime, setToTime] = useState("");
   const [Importance, setImportance] = useState("Low");
@@ -41,7 +41,7 @@ function Modal({ DayToAddTask, setShowModal, SelectedCategory }: props) {
       taskId: taskId,
       Description: TaskDescription,
     };
-    if (FromTime && ToTime && Importance && Name && Day) {
+    if (FromTime && ToTime && Importance && Name ) {
       if (formHours === toHours) {
         if (fromminutes < toMinutes) {
           uploadToDatabse(newTask);

@@ -1,13 +1,13 @@
 import React from "react";
 import { task } from "../../../interfaces";
 
-interface props {
+interface Props {
   task: task;
   setUpdatetTask: React.Dispatch<React.SetStateAction<task | undefined>>;
   setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function DailyTask({ task, setUpdatetTask, setShowUpdateModal }: props) {
+function DailyTask({ task, setUpdatetTask, setShowUpdateModal }: Props) {
   return (
     <div
       onClick={() => {

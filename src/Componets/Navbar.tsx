@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-interface props {
+interface Props {
   SelectedCategory: number;
   setSelectedCategory: React.Dispatch<React.SetStateAction<number>>;
   DailyDay: string | undefined;
@@ -22,7 +22,7 @@ function Navbar({
   setSelectedCategory,
   setDaysInAWeek,
   setDayToAddTask,
-}: props) {
+}: Props) {
   const [MonthView, setMonthForMonthView] = useState<string>("");
   const [MontFromTO, setMonthFromTO] = useState<string>("");
 
@@ -34,40 +34,17 @@ function Navbar({
     } else if (SelectedCategory === 3) {
       const today = new Date();
       let daysOfWeek: string[] = [];
-      let dayString: string = today.toDateString()?.slice(0, 3);
-
-      let firstNumber: number = 0;
-      switch (dayString) {
-        case "Mon":
-          firstNumber = 0;
-          break;
-        case "Tue":
-          firstNumber = -1;
-          break;
-        case "Wed":
-          firstNumber = -2;
-          break;
-        case "Thu":
-          firstNumber = -3;
-          break;
-        case "Fri":
-          firstNumber = -4;
-          break;
-        case "Sat":
-          firstNumber = -5;
-          break;
-        case "Sun":
-          firstNumber = -6;
-          break;
-      }
-
+      
+      const firstDayOfWeek = new Date(today);
+      firstDayOfWeek.setDate(firstDayOfWeek.getDate() - today.getDay());
+      
       for (let index = 0; index < 7; index++) {
-        const date = new Date(today);
-        date.setDate(date.getDate() + index + firstNumber);
-        date.toDateString();
+        const date = new Date(firstDayOfWeek);
+        date.setDate(date.getDate() + index);
         console.log(date.toDateString());
         daysOfWeek.push(date.toDateString());
       }
+      
       setMonthFromTO(
         `${daysOfWeek[0].slice(8, 10)}${daysOfWeek[daysOfWeek.length - 1].slice(
           8,
@@ -75,7 +52,7 @@ function Navbar({
         )}`
       );
       setDaysInAWeek(daysOfWeek);
-      GetMonth(daysOfWeek[0].slice());
+      GetMonth(daysOfWeek[0]);
     } else if (SelectedCategory === 2) {
       const newDate = new Date();
       newDate.toDateString();

@@ -4,7 +4,7 @@ import WeekDay from "./WeekDay";
 import WeekTaskContainer from "./WeekTaskContainer";
 import ShowAllTasksForDayModal from "./ShowAllTasksForDayModal";
 
-interface props {
+interface Props {
   DaysInAWeekTasks: DAYINAWEEEK[];
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
   setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>
@@ -25,7 +25,7 @@ function WeekWiewContainer({
   setShowModal,
   setDayToAddTask
 
-}: props) {
+}: Props) {
   const [DayInTheWeek, setDayInWeek] = useState<string>("");
 
   const [ShowAllTasksForADay, setShowAllTasksForADay] =
@@ -55,15 +55,33 @@ function WeekWiewContainer({
       <div className="h-full w-1/5 bg-blue-400">
         {DaysInAWeekTasks &&
           DaysInAWeekTasks.map((day) => {
-            return (
-              <WeekDay
-                setDayToAddTask={setDayToAddTask}
-                setShowAllTasksForADay={setShowAllTasksForADay}
-                setDayInWeek={setDayInWeek}
-                day={day.day}
-                setShowModal={setShowModal}
-              />
-            );
+            if(day.tasks.length > 4)
+            {
+              return (
+                <WeekDay
+                  ShowAll={true}
+                  setDayToAddTask={setDayToAddTask}
+                  setShowAllTasksForADay={setShowAllTasksForADay}
+                  setDayInWeek={setDayInWeek}
+                  day={day.day}
+                  setShowModal={setShowModal}
+                />
+              );
+            }
+            else
+            {
+              return (
+                <WeekDay
+                  ShowAll={false}
+                  setDayToAddTask={setDayToAddTask}
+                  setShowAllTasksForADay={setShowAllTasksForADay}
+                  setDayInWeek={setDayInWeek}
+                  day={day.day}
+                  setShowModal={setShowModal}
+                />
+              );
+            }
+
           })}
       </div>
 

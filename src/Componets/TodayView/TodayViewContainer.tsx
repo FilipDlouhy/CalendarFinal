@@ -1,7 +1,7 @@
 import React from "react";
 import { task } from "../../../interfaces";
 import TodayTask from "./TodayTask";
-interface props {
+interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   TodayTasks: task[];
   setUpdatetTask: React.Dispatch<React.SetStateAction<task | undefined>>;
@@ -13,7 +13,7 @@ function TodayViewContainer({
   TodayTasks,
   setShowModal,
   setShowUpdateModal,
-}: props) {
+}: Props) {
   return (
     <div style={{ height: "90%" }} className="w-full  mothDayBoxShadow">
       <div className="w-full h-20  flex justify-center items-center">

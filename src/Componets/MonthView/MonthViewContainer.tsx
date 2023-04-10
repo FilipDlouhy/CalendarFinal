@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { task } from "../../../interfaces";
-import DayInMonth from "./DayInMonth";
-import EmptyDayInMonth from "./EmptyDayInMonth";
-import OneWeekInMonth from "./OneWeekInMonth";
-import ShowAllTasksInDayMonth from "./ShowAllTasksInDayMonth";
+import React, { useState } from 'react';
+import type { task } from '../../../interfaces';
+import DayInMonth from './DayInMonth';
+import EmptyDayInMonth from './EmptyDayInMonth';
+import OneWeekInMonth from './OneWeekInMonth';
+import ShowAllTasksInDayMonth from './ShowAllTasksInDayMonth';
 
-interface DAYINAWEEEK {
+interface DayInAWeek {
   day: string;
   tasks: task[];
 }
 
-interface props {
-  TasksInAMonth: DAYINAWEEEK[];
+interface Props {
+  TasksInAMonth: DayInAWeek[];
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setShowUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
   setDayToAddTask: React.Dispatch<React.SetStateAction<string>>;
@@ -24,10 +24,10 @@ function MonthViewContainer({
   setShowModal,
   setShowUpdateModal,
   setUpdatetTask,
-}: props) {
+}: Props) {
   const [ShowAllTasksForADay, setShowAllTasksForADay] =
     useState<boolean>(false);
-  const [DayToShow, setDayToShow] = useState<string>("");
+  const [DayToShow, setDayToShow] = useState<string>('');
 
   function renderWeek() {
     if (TasksInAMonth) {
@@ -37,29 +37,8 @@ function MonthViewContainer({
       let firstDay = 0;
       console.log(TasksInAMonth[0]);
       if (TasksInAMonth[0]) {
-        switch (TasksInAMonth[0].day.slice(0, 3)) {
-          case "Mon":
-            firstDay = 0;
-            break;
-          case "Tue":
-            firstDay = 1;
-            break;
-          case "Wed":
-            firstDay = 2;
-            break;
-          case "Thu":
-            firstDay = 3;
-            break;
-          case "Fri":
-            firstDay = 4;
-            break;
-          case "Sat":
-            firstDay = 5;
-            break;
-          case "Sun":
-            firstDay = 6;
-            break;
-        }
+        const firstDayOfWeek = new Date(TasksInAMonth[0].day);
+        firstDay = firstDayOfWeek.getDay();
       }
 
       for (let index = 0; index < TasksInAMonth.length + firstDay; index++) {
@@ -72,8 +51,8 @@ function MonthViewContainer({
               setDayToAddTask={setDayToAddTask}
               setDayToShow={setDayToShow}
               setShowAllTasksForADay={setShowAllTasksForADay}
-              setUpdatetTask={setUpdatetTask}
-              Tasks={TasksInAMonth[index - firstDay].tasks}
+              setUpdateTask={setUpdatetTask}
+              tasks={TasksInAMonth[index - firstDay].tasks}
               setShowModal={setShowModal}
               day={TasksInAMonth[index - firstDay].day}
               key={index}
@@ -84,7 +63,7 @@ function MonthViewContainer({
 
       let dayIndex = 0;
       for (let index = 0; index < 5; index++) {
-        const days: any[] = [];
+        const days: JSX.Element[] = [];
         for (let index = 0; index < 7; index++) {
           days.push(Days[dayIndex]);
           dayIndex++;
@@ -95,7 +74,6 @@ function MonthViewContainer({
       return Weeks;
     }
   }
-
   return (
     <div
       style={{ height: "90%" }}

@@ -1,6 +1,7 @@
-import React from "react";
-import { task } from "../../../interfaces";
-interface props {
+import React from 'react';
+import { task } from '../../../interfaces';
+
+interface Props {
   task: task;
   setUpdatetTask: React.Dispatch<React.SetStateAction<task | undefined>>;
   setDayToAddTask: React.Dispatch<React.SetStateAction<string>>;
@@ -12,7 +13,7 @@ function TaskInDay({
   setUpdatetTask,
   setDayToAddTask,
   setShowUpdateModal,
-}: props) {
+}: Props) {
   return (
     <div
       onClick={() => {
@@ -27,7 +28,7 @@ function TaskInDay({
       </div>
       <div className="w-2/5 h-full flex items-center justify-end">
         <p className="text-xs">
-          {`${parseInt(task.FromTime.slice(0, 2))}${task.FromTime.slice(2, 5)}`}{" "}
+          {`${parseInt(task.FromTime.slice(0, 2))}${task.FromTime.slice(2, 5)}`}{' '}
           - {`${parseInt(task.ToTime.slice(0, 2))}${task.ToTime.slice(2, 5)}`}
         </p>
       </div>

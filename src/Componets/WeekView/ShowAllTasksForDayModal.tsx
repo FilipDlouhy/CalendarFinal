@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { task } from "../../../interfaces";
 import { getDatabase, onValue, ref } from "firebase/database";
 import ShowAllTasksTask from "./ShowAllTasksTask";
-interface props {
+interface Props {
   DayInTheWeek: string;
   setShowAllTasksForADay: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -10,7 +10,7 @@ interface props {
 function ShowAllTasksForDayModal({
   DayInTheWeek,
   setShowAllTasksForADay,
-}: props) {
+}: Props) {
   const [AllTasks, setAllTasks] = useState<task[]>([]);
 
   function handleCloseModal(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -26,9 +26,8 @@ function ShowAllTasksForDayModal({
     const tasksRef = ref(db, `Tasks/${newDate.toString().slice(0, 15)}`);
     onValue(tasksRef, (snapshot) => {
       if (snapshot.exists()) {
-        const tasks = snapshot.val();
+        const tasks = snapshot.val() as task[];
         Object.values(tasks).map((task) => {
-          // @ts-ignore
           Tasks.push({Day: task.Day,FromTime: task.FromTime,Importance: task.Importance,Name: task.Name,taskId: task.taskId,ToTime: task.ToTime,Description: task.Description,
           });
         });

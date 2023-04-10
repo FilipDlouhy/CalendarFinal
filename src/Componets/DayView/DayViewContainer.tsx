@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { task } from "../../../interfaces";
 import DailyTask from "./DailyTask";
-interface props {
+interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setUpdatetTask: React.Dispatch<React.SetStateAction<task | undefined>>;
   DailyTaks: task[];
@@ -13,7 +13,7 @@ function DayViewContainer({
   DailyTaks,
   setShowModal,
   setShowUpdateModal,
-}: props) {
+}: Props) {
   useEffect(() => {
     console.log(DailyTaks);
   }, [DailyTaks]);
